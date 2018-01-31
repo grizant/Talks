@@ -174,4 +174,4 @@ cat('third thing to evaluate')
 #' ## Converting R Script to HTML/PDF  
 #' If you did everyhing right, above this is the easy part.  Simply render the script as desired with the `render` function from `rmarkdown`.  
 
-#' `rmarkdown::render('~/OneDrive - University of Nevada, Reno/Research/Talks/template.R')`
+#' `rmarkdown::render('~/OneDrive - University of Nevada, Reno/Research/Talks/report-from-R-template.R')`
