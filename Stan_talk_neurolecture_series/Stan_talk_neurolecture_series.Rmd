@@ -3,6 +3,7 @@ title: "An Introduction to Bayesian Cognitive Modeling in R and Stan"
 author: "AG Schissler"
 date: "2/09/2018"
 output: beamer_presentation
+bibliography: Stan_talk_neurolecture_series.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -17,7 +18,7 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ## Slide with Bullets
 
-- Bullet 1
+- Bullet 1 [see @McElreath2016]
 - Bullet 2
 - Bullet 3
 
@@ -33,3 +34,4 @@ summary(cars)
 plot(pressure)
 ```
 
+## References
