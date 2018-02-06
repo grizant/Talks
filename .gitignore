@@ -5,6 +5,10 @@
 *.aux
 *.log
 *.toc
+*.el
+*.bcf
+*.fls
+*.run.xml
 
 # PDF output - usually a bad idea to keep this in Git
 *.pdf
