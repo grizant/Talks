@@ -67,6 +67,10 @@ kable(x)
 
 ## I.2. Graphical model
 
+\begin{center}
+    \includegraphics[width=\textwidth, keepaspectratio]{IQ_graph_model.pdf}
+\end{center}
+
 ## I.3. Stan model Code
 
 ```{r IQ_stan_model, echo = TRUE}
