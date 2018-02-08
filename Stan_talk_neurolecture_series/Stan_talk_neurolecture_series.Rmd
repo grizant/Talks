@@ -33,7 +33,7 @@ suppressWarnings(library(rstan))
 
 ## Statistical Rethinking @McElreath2016
 
-\includegraphics[page=4,width=0.8\paperwidth]{Lecture01.pdf}
+\includegraphics[page=4,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
 
 ## flowchart
 
@@ -80,8 +80,6 @@ kable(x)
 \end{column}
 \end{columns}
 
-
-
 ## I.3. Stan model Code
 
 ```{r IQ_stan_model, echo = TRUE}
@@ -116,7 +114,7 @@ P <- ncol(x) # number of repeated measurements
 
 data <- list(x=x, N=N, P=P) # to be passed on to Stan
 myinits <- list(
-  list(mu=rep(100, n), sigma=1))
+  list(mu=rep(100, N), sigma=1))
 
 # parameters to be monitored: 
 parameters <- c("mu", "sigma")
@@ -173,6 +171,21 @@ kable(head(std_i))
 ```
 
 ## II.2. Graphical model
+
+
+\begin{columns}
+\begin{column}{0.5\textwidth}  
+    \begin{center}
+    \includegraphics[width=\columnwidth, keepaspectratio]{hierarchical_signal_detection_graphical_model.jpg}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+	$\mu_{i} \sim Normal(0,300)$
+	$\sigma \sim Uniform(0,100)$
+	$xy_{ij} \sim Normal(\mu_{i}, \sigma)$
+\end{column}
+\end{columns}
+
 
 ## II.3. Stan model Code
 
@@ -342,9 +355,83 @@ box(lty=1)
 
 # Case Study III: Psychophysical
 
-## Extension to contamination
 
-insert graphical model
+## III.1. Research question and data 
+
+Subjects are presented with stimuli that are either signal or noise and asked to make a decision whether the trial features signal or noise. The results of the experiment for the $i^{the}$ subject can be tabulated in a simple $2 \times 2$ table:
+
+	| |Signal|Noise|
+	|---|---|---|
+	|Yes response| Hit | False alarm|
+	|No response| Miss | Correct rejection|
+ 
+
+## III.1. Research question and data 
+
+```{r psych_data}
+source("~/OneDrive - University of Nevada, Reno/Research/RStan/example-models/Bayesian_Cognitive_Modeling/CaseStudies/SignalDetection/heit_rotello.RData") #loads the data
+names(std_i) <- c("hits", "false alarms", "misses", "correct rejections")
+kable(head(std_i))
+```
+
+## II.2. Graphical model
+
+\begin{columns}
+\begin{column}{0.5\textwidth}  
+    \begin{center}
+    \includegraphics[width=\columnwidth, keepaspectratio]{psychophysical_graphical_model.jpg}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+	$\mu_{i} \sim Normal(0,300)$
+	$\sigma \sim Uniform(0,100)$
+	$xy_{ij} \sim Normal(\mu_{i}, \sigma)$
+\end{column}
+\end{columns}
+
+
+## II.3. Stan model Code
+
+```{r psych_stan_model, echo = TRUE}
+
+```
+
+## III.3  Code
+
+```{r psych_presample, echo = TRUE, cache = T}
+
+
+```
+
+## III.3  Code
+```{r psych_sampling, echo = TRUE, cache = T, results = "hide"}
+
+```
+
+## III.4. Output and discussion
+```{r psych_output1, echo = FALSE, cache = TRUE}
+
+```
+
+## III.5. Output and discussion
+```{r psych_output2, echo = FALSE}
+
+```
+
+## III.6. Extension to contamination
+
+\begin{columns}
+\begin{column}{0.5\textwidth}  
+    \begin{center}
+    \includegraphics[width=\columnwidth, keepaspectratio]{psychophysical_containment_graphical_model.jpg}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+	$\mu_{i} \sim Normal(0,300)$
+	$\sigma \sim Uniform(0,100)$
+	$xy_{ij} \sim Normal(\mu_{i}, \sigma)$
+\end{column}
+\end{columns}
 
 # Conclusion and references
 
