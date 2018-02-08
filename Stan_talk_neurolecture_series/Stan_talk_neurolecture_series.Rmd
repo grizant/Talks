@@ -67,9 +67,20 @@ kable(x)
 
 ## I.2. Graphical model
 
-\begin{center}
-    \includegraphics[width=\textwidth, keepaspectratio]{IQ_graph_model.pdf}
-\end{center}
+\begin{columns}
+\begin{column}{0.5\textwidth}  
+    \begin{center}
+    \includegraphics[width=\columnwidth, keepaspectratio]{IQ_graph_model.pdf}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+	$\mu_{i} \sim Normal(0,300)$
+	$\sigma \sim Uniform(0,100)$
+	$xy_{ij} \sim Normal(\mu_{i}, \sigma)$
+\end{column}
+\end{columns}
+
+
 
 ## I.3. Stan model Code
 
@@ -77,19 +88,21 @@ kable(x)
 model <- "
 // Repeated Measures of IQ
 data { 
-  int<lower=1> n;
-  int<lower=1> m;
-  matrix[n, m] x;
+  int<lower=1> N;
+  int<lower=1> P;
+  matrix[N, P] x;
 }
 parameters {
-  vector<lower=0,upper=300>[n] mu;
-  real<lower=0,upper=100> sigma;
+  real mu[N];
+  real<lower=0> sigma;
 } 
 model {
   // Data Come From Gaussians With Different Means
   // But Common Standard Deviation
-  for (i in 1:n)
-    for (j in 1:m)  
+  mu[N] ~ normal(100,20);
+  sigma ~ exponential(0.1);
+  for (i in 1:N)
+    for (j in 1:P)  
       x[i,j] ~ normal(mu[i], sigma);
 }"
 ```
@@ -98,10 +111,10 @@ model {
 
 ```{r IQ_presample, echo = TRUE, cache = T}
 
-n <- nrow(x) # number of people
-m <- ncol(x) # number of repeated measurements
+N <- nrow(x) # number of people
+P <- ncol(x) # number of repeated measurements
 
-data <- list(x=x, n=n, m=m) # to be passed on to Stan
+data <- list(x=x, N=N, P=P) # to be passed on to Stan
 myinits <- list(
   list(mu=rep(100, n), sigma=1))
 
