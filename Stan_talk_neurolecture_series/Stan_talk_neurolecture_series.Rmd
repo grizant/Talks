@@ -58,7 +58,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 ## What other statistical methods could one use?
 
 - **Bayesian modeling** is highly _flexible_, _philosophically coherent_, and more readily _interpretible_.
-- Dennis Lindley's Comment on _Why Isn' t Everyone a Bayesian?_ [@Efron1986], " Every statistician would be a Bayesian if he took the trouble to read the literature thoroughly and was honest enough to admit that he might have been wrong."
+- Dennis Lindley's Comment on _Why Isn't Everyone a Bayesian?_ [@Efron1986], " Every statistician would be a Bayesian if he took the trouble to read the literature thoroughly and was honest enough to admit that he might have been wrong."
 
 ## 
 
@@ -178,7 +178,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 
 # Case Study I: Inferring IQ using Gaussians from @Lee2013
 
-## I.1. Research question and data from @Lee2013
+## IQ.1. Research question and data from @Lee2013
 
 We seek to estimate the IQ of a set of people. There are only three subjects and each take three IQ tests. The data are displayed below:
 
@@ -190,7 +190,7 @@ colnames(x) <- paste0("Measurement", 1:3)
 kable(x)
 ```
 
-## I.2. Graphical model
+## IQ.2. Graphical model
 
 \begin{columns}
 \begin{column}{0.5\textwidth}  
@@ -199,15 +199,15 @@ kable(x)
      \end{center}
 \end{column}
 \begin{column}{0.5\textwidth}
-	$\mu_{i} \sim Normal(0,300)$
-	$\sigma \sim Uniform(0,100)$
+	$\mu_{i} \sim Normal(100,20)$
+	$\sigma \sim Exponential(0.1)$
 	$xy_{ij} \sim Normal(\mu_{i}, \sigma)$
 \end{column}
 \end{columns}
 
-## I.3. Stan model Code 
+## IQ.3. IQ Stan model
 
-```{r IQ_stan_model, echo = TRUE}
+```{r IQ_stan_model, echo = TRUE, size = "footnotesize"}
 model <- "
 // Repeated Measures of IQ
 data { 
@@ -230,23 +230,23 @@ model {
 }"
 ```
 
-## I.3  Code
+## IQ.4 R Code pre-sampler
 
-```{r IQ_presample, echo = TRUE, cache = T}
+```{r IQ_presample, echo = TRUE, cache = T, size = "footnotesize"}
 
 N <- nrow(x) # number of people
 P <- ncol(x) # number of repeated measurements
 
 data <- list(x=x, N=N, P=P) # to be passed on to Stan
 myinits <- list(
-  list(mu=rep(100, N), sigma=1))
+  list(mu=rep(100, N), sigma=10))
 
 # parameters to be monitored: 
 parameters <- c("mu", "sigma")
 ```
 
-## I.3  Code
-```{r IQ_sampling, echo = TRUE, cache = T, results = "hide"}
+## IQ.5 Run the HMC sampler
+```{r IQ_sampling, echo = TRUE, cache = T, results = "hide", size = "footnotesize"}
 
 # The following command calls Stan with specific options.
 # For a detailed description type "?rstan".
@@ -264,20 +264,20 @@ samples <- stan(model_code=model,
 # ready for inspection.
 ```
 
-## I.4. Output and discussion
+## IQ.6. Sample summary and diagnostics
 ```{r IQ_output1, echo = FALSE, size = "footnotesize"}
 print(samples, probs = c(0.025, 0.5, 0.975),
       digits_summary = 2)
 ```
 
-## I.5. Output and discussion
+## IQ.7. Density visualization
 ```{r IQ_output2, echo = FALSE, cache = TRUE}
 stan_dens(samples)
 ```
 
-# Case Study II: Hierachical signal detection from @Lee2013
+# Case Study II: Hierachical signal detection theory (SDT) from @Lee2013
 
-## II.1. Research question and data from @Lee2013
+## SDT.1. Research question and data from @Lee2013
 
 Subjects are presented with stimuli that are either signal or noise and asked to make a decision whether the trial features signal or noise. The results of the experiment for the $i^{the}$ subject can be tabulated in a simple $2 \times 2$ table:
 
