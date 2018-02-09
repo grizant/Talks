@@ -343,7 +343,7 @@ parameters {
 "
 ```
 
-## SDT.6. R code for Stan model II
+## SDT.6 R code for Stan model II
 
 ```{r SDT_stan_model2, echo = TRUE, size = "footnotesize"}
 model <- paste0(model,"
@@ -503,14 +503,15 @@ box(lty=1)
 
 ```
 
-# Case Study III: Psychophysical functions from @Lee2013
+# Case Study III: Psychophysical functions (PPF) from @Lee2013
 
+## PPF.1 Research question and data from @Lee2013
 
-## Psychophysical functions: Research question and data from @Lee2013
+We are now trying to infer how external physical stimuli cause internal pyschological sensations. The experimental setup is two stimuli are repeatedly presented to a subject - a _standard_ stimulus (baseline) and a _test_ stimulus. In these data, 8 subjects each completed 3 blocks of 80 trials of pairs of two sounds ("beeps"). The standard beep was 300 ms and test beep was **variable**. 
+
+## PPF.2 The psychophysical function and key quantities of interest  @Lee2013
 
 \includegraphics[width=0.8\paperwidth, keepaspectratio]{psychophysical_curve.jpg}
-
-## Psychophysical functions: Research question and data 
 
 ```{r psych_data}
 
@@ -532,25 +533,27 @@ nsubjs <- 8
 
 ```
 
-## III.2. Graphical model
+## PPF.3 Graphical model
 
 \begin{columns}
 \begin{column}{0.5\textwidth}  
     \begin{center}
-    \includegraphics[width=\columnwidth, keepaspectratio]{psychophysical_graphical_model.jpg}
+    \includegraphics[width=0.8\columnwidth, keepaspectratio]{psychophysical_graphical_model.jpg}
      \end{center}
 \end{column}
 \begin{column}{0.5\textwidth}
-	$\mu_{i} \sim Normal(0,300)$
-	$\sigma \sim Uniform(0,100)$
-	$xy_{ij} \sim Normal(\mu_{i}, \sigma)$
+	$r_{ij} \sim Binomial(\theta_{ij}, n_{ij})$ 
+	$logit(\theta_{ij}) \leftarrow \alpha_{i} + \beta_{i}(x_{ij} - \bar{x_{i}})$
+	$\alpha_{i} \sim Normal(\mu_{\alpha}, \sigma_{\alpha})$
+	$\beta_{i} \sim Normal(\mu_{\beta}, \sigma_{\beta})$
+	$\mu_{\alpha} \sim Normal(0,1000)$
+	$\mu_{\beta} \sim Normal(0,1000)$
+	$\sigma_{\alpha} \sim Uniform(0,1000)$
+	$\sigma_{\beta} \sim Uniform(0,1000)$
 \end{column}
 \end{columns}
 
-
-## III.3. Stan model Code
-
-```{r psych_stan_model, echo = TRUE}
+```{r psych_stan_model, echo = FALSE}
 model <- "
 // Logistic Psychophysical Function
 data { 
@@ -587,9 +590,7 @@ model {
 }"
 ```
 
-## III.3  Code
-
-```{r psych_presample, echo = TRUE, cache = T}
+```{r psych_presample, echo = FALSE, cache = T, results = "hide", warning=F, message=F}
 data <- list(x=x, xmean=xmean, n=n, r=r, nsubjs=nsubjs, nstim=nstim) 
 
 myinits <- list( 
@@ -602,8 +603,7 @@ parameters <- c("alpha", "beta")  # Parameters to be monitored
 
 ```
 
-## III.3  Code
-```{r psych_sampling, echo = TRUE, cache = T, results = "hide"}
+```{r psych_sampling, echo = FALSE, cache = T, results = "hide"}
 samples <- stan(model_code=model,
                 data=data, 
                 init=myinits,
@@ -619,8 +619,7 @@ samples <- stan(model_code=model,
 
 ```
 
-## III.4. Output and discussion
-```{r psych_output1, echo = FALSE, cache = TRUE, size="footnotesize"}
+```{r psych_sampler, echo = FALSE, cache = T, results = "hide", warning=F, message=F}
 x[x == -99] = NA
 n[n == -99] = NA
 r[r == -99] = NA
@@ -683,7 +682,8 @@ print(samples, probs = c(0.025, 0.5, 0.975),
       digits_summary = 2)
 ```
 
-## III.5. Output and discussion
+## PPF.5 Subject-specific psychophysical function estimators
+
 ```{r psych_output2, echo = FALSE}
 
 ## dev.new(width=10,height=5)
@@ -708,29 +708,44 @@ for (i in 1:nsubjs)
 }
 mtext("Proportion 'Long' Response",side=2,line=2,outer=T,cex=1.4)
 mtext("Test Interval (ms)",side=1,outer=T,line=3,cex=1.4)
+```
+
+## PPF.6 Subject-specific psychophysical function estimators with uncertainty
+
+```{r psych_output3, echo = FALSE}
+
+layout(matrix(1:nsubjs,2,4,byrow=T))
+par(mar=c(1,2,2,0),oma=c(5,5,1,1))
+for (i in 1:nsubjs)
+	{
+	scale <- seq(x[i,1],x[i,nstim[i]], by=.1)
+	plot(x[i,],rprop[i,],main=paste("Subject",as.character(i)),xlab="",ylab="",pch=15,col="dark grey",ylim=c(0,1),yaxt="n",xaxt="n")
+	for (g in 1:20)
+	  {
+	  lines(scale,F3(scale,i,g),type="l",col="light grey")
+	  }
+	lines(scale,F1(scale,i),type="l")
+	if (i==1 | i==5) {
+		axis(2,las=1,yaxp=c(0,1,2))
+		#axis(2,at=0.84,las=1)
+		}
+	if (i>4) axis(1)
+	}
+	mtext("Proportion 'Long' Response",side=2,line=2,outer=T,cex=1.4)
+	mtext("Test Interval (ms)",side=1,outer=T,line=3,cex=1.4)
 
 ```
 
-## III.6. Extension to contamination
+## PPF.7 Model extension to contamination
 
-\begin{columns}
-\begin{column}{0.5\textwidth}  
-    \begin{center}
-    \includegraphics[width=\columnwidth, keepaspectratio]{psychophysical_containment_graphical_model.jpg}
-     \end{center}
-\end{column}
-\begin{column}{0.5\textwidth}
-	$\mu_{i} \sim Normal(0,300)$
-	$\sigma \sim Uniform(0,100)$
-	$xy_{ij} \sim Normal(\mu_{i}, \sigma)$
-\end{column}
-\end{columns}
+
+\includegraphics[width=0.7\paperwidth, keepaspectratio]{psychophysical_containment_graphical_model.jpg}
 
 # Take-home message and references
 
-## Take home points
+## Take home points: A world beyond $p < 0.05$.
 - Bayesian modeling is natural and flexible
 - Tools exist to compute complex models efficiently
-- Interdisciplinary teams for better science (your statistician friends across campus)
+- Interdisciplinary teams for better science (find your statistician-friends across campus)
 
 ## References {.allowframebreaks}
