@@ -303,8 +303,10 @@ names(std_i) <- c("hits", "false alarms", "misses", "correct rejections")
 kable(head(std_i))
 ```
 
-## II.2. Graphical model
+## II.1. Research question and data 
+\includegraphics[width=0.8\paperwidth, keepaspectratio]{hierarchical_signal_detection_curves.jpg}
 
+## II.2. Graphical model
 
 \begin{columns}
 \begin{column}{0.5\textwidth}  
@@ -498,7 +500,7 @@ box(lty=1)
 
 ## Psychophysical functions: Research question and data from @Lee2013
 
-???
+\includegraphics[width=0.8\paperwidth, keepaspectratio]{psychophysical_curve.jpg}
 
 ## Psychophysical functions: Research question and data 
 
