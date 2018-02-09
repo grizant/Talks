@@ -117,10 +117,6 @@ suppressWarnings(library(rstan))
 
 ## 
 
-\includegraphics[page=18,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
-
-## 
-
 \includegraphics[page=19,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
 
 ## 
@@ -155,11 +151,33 @@ suppressWarnings(library(rstan))
 
 \includegraphics[page=27,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
 
-## MCMC
+## 
+
+\includegraphics[page=30,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=40,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=22,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
+
+## 
+
+\includegraphics[page=24,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
+
+## 
+
+\includegraphics[page=26,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
 
 ## Stan and Hamilition Monte Carlo
 
 \includegraphics[page=42,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
+
+## 
+
+\includegraphics[page=38,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
 
 # Case Study I: Inferring IQ using Gaussians
 
