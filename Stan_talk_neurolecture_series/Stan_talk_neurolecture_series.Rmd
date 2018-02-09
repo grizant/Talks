@@ -18,38 +18,148 @@ suppressWarnings(library(rstan))
 
 # Motivation
 
-## The problem
-- Reproducibility crisis (what to cite?)
-- confusion
+## The problem: Science in a crisis?
+- Dealing with a reproducibility crisis? [e.g., @Baker2016]
 - Impact of Statistical methods for research workers @Fisher1925
+- @Briggs2017, "Clients ask, 'What's the probability that if I know $X$, $Y$ will be true?'. Instead of telling them that, we give them $p$-values. This is like asking for a Cadillac and being given a broken down rickshaw without wheels."
+\includegraphics[width=0.5\paperwidth]{SSI_logo.png} 
 
-## ASA on p-values from @Wasserstein2016
-1. P-values can indicate how incompatible the data are with a specified statistical model.
-2. P-values do not measure the probability that the studied hypothesis is true, or the probability that the data were produced by random chance alone.
-3. Scientific conclusions and business or policy decisions should not be based only on whether a p-value passes a specific threshold.
+## ASA statement on $p$-values from @Wasserstein2016
+
+1. $P$-values can indicate how incompatible the data are with a specified statistical model.
+2. $P$-values do not measure the probability that the studied hypothesis is true, or the probability that the data were produced by random chance alone.
+3. Scientific conclusions and business or policy decisions should not be based only on whether a $p$-value passes a specific threshold.
 4. Proper inference requires full reporting and transparency
-5. A p-value, or statistical significance, does not measure the size of an effect or the importance of a result.
-6. By itself, a p-value does not provide a good measure of evidence regarding a model or hypothesis.
+5. A $p$-value, or statistical significance, does not measure the size of an effect or the importance of a result.
+6. By itself, a $p$-value does not provide a good measure of evidence regarding a model or hypothesis.
 
-## Statistical Rethinking @McElreath2016
+## Philosophy of Science @McElreath2016
 
-\includegraphics[page=4,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+\includegraphics[page=11,width=0.8\paperwidth]{Lecture01.pdf} 
 
-## flowchart
+##
 
-\includegraphics[height=0.9\paperheight, keepaspectratio]{stats_flow_chart_v2014.pdf}
+\includegraphics[page=17,width=0.8\paperwidth]{Lecture01.pdf} 
 
-## Lindley 1986 quote?
+## Moreover, applied statistics looks a lot like this...
+
+\begin{columns}
+\begin{column}{0.5\textwidth}  
+    \begin{center}
+	\begin{itemize}
+		\item Most developed in early 20th century, fragile, eclipsed by more recent tools
+		\item Often users don’t know they are using models
+		\item Symptom of naive falsicationism
+	\end{itemize}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+	\includegraphics[height=0.9\paperheight, keepaspectratio]{stats_flow_chart_v2014.pdf}
+\end{column}
+\end{columns}
+
+## What other statistical methods could one use?
+
+- **Bayesian modeling** is highly _flexible_, _philosophically coherent_, and more readily _interpretible_.
+- Dennis Lindley's Comment on _Why Isn' t Everyone a Bayesian?_ [@Efron1986], " Every statistician would be a Bayesian if he took the trouble to read the literature thoroughly and was honest enough to admit that he might have been wrong."
+
+## 
+
+\includegraphics[page=19,width=0.8\paperwidth]{Lecture01.pdf} 
+
+## Bayesian methods fix everything?
+
+- Warning from Andrew Gelman (blog 27 Jan 2018):
+
+"... that the most important steps in any study are valid and reliable measurements and, where possible, large and stable effect sizes. All the preregistration in the world won’t save you if your measurements are not serious or if you’re studying an effect that is tiny or highly variable."
+
+- Bayesian methods often require explicit (and sometimes numerous) assumptions and subjective belief acknowledgement.
+
+[see @Gelman2008 for more Anti-Bayesian arguments]
 
 # Bayes 101
 
-## General principles
+## From _Statistical Rethinking_ @McElreath2016
 
-## Prediction
+\includegraphics[page=9,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=10,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=11,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+[comment]: ## 
+
+[comment]: \includegraphics[page=12,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## Prior knowledge
+
+\includegraphics[page=13,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## One observation
+
+\includegraphics[page=14,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
 
 ## Sequential updating
 
+\includegraphics[page=15,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=16,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=17,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=18,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=19,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=20,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=21,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=22,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=23,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=24,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=25,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=26,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=27,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
 ## MCMC
+
+## Stan and Hamilition Monte Carlo
+
+\includegraphics[page=42,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
 
 # Case Study I: Inferring IQ using Gaussians
 
@@ -80,7 +190,7 @@ kable(x)
 \end{column}
 \end{columns}
 
-## I.3. Stan model Code
+## I.3. Stan model Code 
 
 ```{r IQ_stan_model, echo = TRUE}
 model <- "
@@ -442,4 +552,4 @@ kable(head(std_i))
 
 ## Software used
 
-## References 
+## References {.allowframebreaks}
