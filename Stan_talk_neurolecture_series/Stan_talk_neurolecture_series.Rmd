@@ -277,7 +277,7 @@ stan_dens(samples)
 
 # Case Study II: Hierachical signal detection theory (SDT) from @Lee2013
 
-## SDT.1. Research question and data from @Lee2013
+## SDT.1 Research question and data from @Lee2013
 
 Subjects are presented with stimuli that are either signal or noise and asked to make a decision whether the trial features signal or noise. The results of the experiment for the $i^{the}$ subject can be tabulated in a simple $2 \times 2$ table:
 
@@ -285,9 +285,13 @@ Subjects are presented with stimuli that are either signal or noise and asked to
 |---|---|---|
 |Yes response| Hit | False alarm|
 |No response| Miss | Correct rejection|
- 
 
-## II.1. Research question and data 
+## SDT.2. Key quantities and modeling assumptions
+\includegraphics[width=0.8\paperwidth, keepaspectratio]{hierarchical_signal_detection_curves.jpg}
+
+## SDT.3 Research question and data 
+
+There are two groups an _induction_ group and an _deduction_ group, each with 40 subjects presented with 8 trials (4 signal and 4 noise trials). Here are data for the first 6 subjects in the induction group.
 
 ```{r SDT_data}
 source("~/OneDrive - University of Nevada, Reno/Research/RStan/example-models/Bayesian_Cognitive_Modeling/CaseStudies/SignalDetection/heit_rotello.RData") #loads the data
@@ -295,10 +299,7 @@ names(std_i) <- c("hits", "false alarms", "misses", "correct rejections")
 kable(head(std_i))
 ```
 
-## II.1. Research question and data 
-\includegraphics[width=0.8\paperwidth, keepaspectratio]{hierarchical_signal_detection_curves.jpg}
-
-## II.2. Graphical model
+## SDT.4 Graphical model (now things get interesting).
 
 \begin{columns}
 \begin{column}{0.5\textwidth}  
@@ -307,16 +308,21 @@ kable(head(std_i))
      \end{center}
 \end{column}
 \begin{column}{0.5\textwidth}
-	$\mu_{i} \sim Normal(0,300)$
-	$\sigma \sim Uniform(0,100)$
-	$xy_{ij} \sim Normal(\mu_{i}, \sigma)$
+	$\mu_{d},\mu_{c} \sim Normal(0,1000)$
+	$\lambda_{d},\lambda_{c} \sim Gamma(.001, .001)$
+	$d_{i} \sim Normal(\mu_{d},\lambda_{d})$
+	$c_{i} \sim Normal(\mu_{c},\lambda_{c})$
+	$\theta^{h}_{i} \leftarrow \Phi(\frac{1}{2}d_{i}-c_{i})$
+	$\theta^{f}_{i} \leftarrow \Phi(-\frac{1}{2}d_{i}-c_{i})$
+	$h_{i} \sim Binomial(\theta^{h}_{i}, s)$
+	$f_{i} \sim Binomial(\theta^{f}_{i}, n)$
 \end{column}
 \end{columns}
 
 
-## II.3. Stan model Code
+## SDT.5 R code for Stan model I
 
-```{r SDT_stan_model, echo = TRUE}
+```{r SDT_stan_model, echo = TRUE, size = "footnotesize"}
 model <- "
 // Hierarchical Signal Detection Theory
 data { 
@@ -334,7 +340,13 @@ parameters {
   real<lower=0> lambdac;
   real<lower=0> lambdad;
 } 
+"
+```
 
+## SDT.6. R code for Stan model II
+
+```{r SDT_stan_model2, echo = TRUE, size = "footnotesize"}
+model <- paste0(model,"
 transformed parameters {
   real<lower=0,upper=1> thetah[k];
   real<lower=0,upper=1> thetaf[k];
@@ -350,6 +362,13 @@ transformed parameters {
     thetaf[i] = Phi(-d[i] / 2 - c[i]);
   }
 }
+")
+```
+
+## SDT.7 R code for Stan model III
+
+```{r SDT_stan_model3, echo = TRUE, size = "footnotesize"}
+model <- paste0(model,"
 model {
   // Priors 
   muc ~ normal(0, inv_sqrt(.001));
@@ -363,18 +382,15 @@ model {
   // Observed counts
   h ~ binomial(s, thetah);
   f ~ binomial(n, thetaf);
-}"
+}")
 ```
 
-## II.3  Code
-
-```{r SDT_presample, echo = TRUE, cache = T}
+```{r SDT_presample, echo = FALSE, cache = T}
 niter   <- 10000
 nburnin <- 1000
 ```
 
-## II.3  Code
-```{r SDT_sampling, echo = TRUE, cache = T, results = "hide"}
+```{r SDT_sampling, echo = FALSE, cache = T, results = "hide"}
 
 for (dataset in 1:2) {  #analyze both conditions
 
@@ -434,7 +450,7 @@ for (dataset in 1:2) {  #analyze both conditions
 
 ```
 
-## II.4. Output and discussion
+## SDT.8 Induction group sampler summary
 ```{r SDT_output1, echo = FALSE, cache = TRUE, size="footnotesize"}
 keepi <- 1000
 keep <- sample(niter, keepi)
@@ -451,13 +467,13 @@ print(isamples, probs = c(0.025, 0.5, 0.975),
 
 ```
 
-## II.4. Output and discussion
+## SDT.9 Deduction group sampler summary
 ```{r SDT_output2, echo = FALSE, size = "footnotesize"}
 print(dsamples, probs = c(0.025, 0.5, 0.975),
       digits_summary = 2)
 ```
 
-## II.5. Output and discussion
+## SDT.10 Joint posterior over $\mu_{d}$ and $\mu_{c}$ for the induction group (dark) deduction group (light) conditions.
 ```{r SDT_output3, echo = FALSE}
 #####Figure 11.5 & 11.6
 
