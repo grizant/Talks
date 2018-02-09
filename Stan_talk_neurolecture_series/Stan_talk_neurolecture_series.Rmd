@@ -38,14 +38,6 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 5. A $p$-value, or statistical significance, does not measure the size of an effect or the importance of a result.
 6. By itself, a $p$-value does not provide a good measure of evidence regarding a model or hypothesis.
 
-## Philosophy of Science @McElreath2016
-
-\includegraphics[page=11,width=0.8\paperwidth]{Lecture01.pdf} 
-
-##
-
-\includegraphics[page=17,width=0.8\paperwidth]{Lecture01.pdf} 
-
 ## Moreover, applied statistics looks a lot like this...
 
 \begin{columns}
