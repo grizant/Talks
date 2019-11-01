@@ -1,0 +1,752 @@
+---
+title: "Reasoning with Uncertainty the Bayesian way"
+subtitle: "with examples in Cognitive Modeling in R and Stan"
+author: "AG Schissler"
+date: "11/08/2018"
+output: beamer_presentation
+toc: true
+bibliography: library.bib
+header-includes:
+- \usepackage{graphicx}
+- \usepackage{pdfpages}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+suppressWarnings(library(rstan))
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+```
+
+# Motivation
+
+## The problem: Science in a crisis?
+- Dealing with a reproducibility crisis? [e.g., @Baker2016]
+- Impact of Statistical methods for research workers @Fisher1925
+- @Briggs2017, "Clients ask, 'What's the probability that if I know $X$, $Y$ will be true?'. Instead of telling them that, we give them $p$-values. This is like asking for a Cadillac and being given a broken down rickshaw without wheels."
+\includegraphics[width=0.5\paperwidth]{SSI_logo.png} 
+
+## ASA statement on $p$-values from @Wasserstein2016
+
+1. $P$-values can indicate how incompatible the data are with a specified statistical model.
+2. $P$-values do not measure the probability that the studied hypothesis is true, or the probability that the data were produced by random chance alone.
+3. Scientific conclusions and business or policy decisions should not be based only on whether a $p$-value passes a specific threshold.
+4. Proper inference requires full reporting and transparency
+5. A $p$-value, or statistical significance, does not measure the size of an effect or the importance of a result.
+6. By itself, a $p$-value does not provide a good measure of evidence regarding a model or hypothesis.
+
+## Moreover, applied statistics looks a lot like this...
+
+\begin{columns}
+\begin{column}{0.5\textwidth}  
+    \begin{center}
+	\begin{itemize}
+		\item Most developed in early 20th century, fragile, eclipsed by more recent tools
+		\item Often users don’t know they are using models
+		\item Symptom of naive attempts to falisfy theories
+	\end{itemize}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+	\includegraphics[height=0.9\paperheight, keepaspectratio]{stats_flow_chart_v2014.pdf}
+\end{column}
+\end{columns}
+
+## What other statistical methods could one use?
+
+- **Bayesian modeling** is highly _flexible_, _philosophically coherent_, and more readily _interpretible_.
+- Dennis Lindley's Comment on _Why Isn't Everyone a Bayesian?_ [@Efron1986], " Every statistician would be a Bayesian if he took the trouble to read the literature thoroughly and was honest enough to admit that he might have been wrong."
+
+## 
+
+\includegraphics[page=19,width=0.8\paperwidth]{Lecture01.pdf} 
+
+## Bayesian methods fix everything?
+
+- Warning from Andrew Gelman (blog 27 Jan 2018):
+
+"... that the most important steps in any study are valid and reliable measurements and, where possible, large and stable effect sizes. All the preregistration in the world won’t save you if your measurements are not serious or if you’re studying an effect that is tiny or highly variable."
+
+- Bayesian methods often require explicit (and sometimes numerous) assumptions and subjective belief acknowledgement.
+
+[see @Gelman2008 for more Anti-Bayesian arguments]
+
+# Bayes 101
+
+## From _Statistical Rethinking_ @McElreath2016
+
+\includegraphics[page=9,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=10,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=11,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+[comment]: ## 
+
+[comment]: \includegraphics[page=12,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## Prior knowledge
+
+\includegraphics[page=13,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## One observation
+
+\includegraphics[page=14,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## Sequential updating
+
+\includegraphics[page=15,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=16,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=17,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=19,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=20,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=21,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=22,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=23,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=24,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=25,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=26,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=27,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=30,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=40,width=0.8\paperwidth]{week01_lecture02_27_Oct.pdf}
+
+## 
+
+\includegraphics[page=22,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
+
+## 
+
+\includegraphics[page=24,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
+
+## 
+
+\includegraphics[page=26,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
+
+## Stan (@Carpenter2017) and Hamilition Monte Carlo (@Hoffman2011)
+
+\includegraphics[page=42,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
+
+## 
+
+\includegraphics[page=38,width=0.8\paperwidth]{week06_lecture10_29_Nov.pdf}
+
+# Case Study I: Inferring IQ using Gaussians from @Lee2013
+
+## IQ.1. Research question and data from @Lee2013
+
+We seek to estimate the IQ of a set of people. There are only three subjects and each take three IQ tests. The data are displayed below:
+
+```{r IQ_data}
+x <- matrix(c(90, 95, 100, 105, 110, 115, 150, 155, 160), 
+            nrow=3, ncol=3, byrow=T)
+rownames(x) <- paste0("Subject", 1:3)
+colnames(x) <- paste0("Measurement", 1:3)
+knitr::kable(x)
+```
+
+## IQ.2. Graphical model
+
+\begin{columns}
+\begin{column}{0.5\textwidth}  
+    \begin{center}
+    \includegraphics[width=\columnwidth, keepaspectratio]{IQ_graph_model.pdf}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+	$\mu_{i} \sim Normal(100,20)$
+	$\sigma \sim Exponential(0.1)$
+	$x_{ij} \sim Normal(\mu_{i}, \sigma)$
+\end{column}
+\end{columns}
+
+## IQ.3. IQ Stan model
+
+```{r IQ_stan_model, echo = TRUE, size = "footnotesize"}
+model <- "
+// Repeated Measures of IQ
+data { 
+  int<lower=1> N;
+  int<lower=1> P;
+  matrix[N, P] x;
+}
+parameters {
+  real mu[N];
+  real<lower=0> sigma;
+} 
+model {
+  // Data Come From Gaussians With Different Means
+  // But Common Standard Deviation
+  mu[N] ~ normal(100,20);
+  sigma ~ exponential(0.1);
+  for (i in 1:N)
+    for (j in 1:P)  
+      x[i,j] ~ normal(mu[i], sigma);
+}"
+```
+
+## IQ.4 R Code pre-sampler
+
+```{r IQ_presample, echo = TRUE, cache = T, size = "footnotesize"}
+
+N <- nrow(x) # number of people
+P <- ncol(x) # number of repeated measurements
+
+data <- list(x=x, N=N, P=P) # to be passed on to Stan
+myinits <- list(
+  list(mu=rep(100, N), sigma=10))
+
+# parameters to be monitored: 
+parameters <- c("mu", "sigma")
+```
+
+## IQ.5 Run the HMC sampler
+```{r IQ_sampling, echo = TRUE, cache = T, results = "hide", size = "footnotesize"}
+
+# The following command calls Stan with specific options.
+# For a detailed description type "?rstan".
+samples <- stan(model_code=model,   
+                data=data, 
+                init=myinits,  # If not specified, gives random inits
+                pars=parameters,
+                iter=2000, 
+                chains=1, 
+                thin=1,
+                # warmup = 100,  # Stands for burn-in; Default = iter/2
+                # seed = 123  # Setting seed; Default is random seed
+                )
+# Now the values for the monitored parameters are in the "samples" object, 
+# ready for inspection.
+```
+
+## IQ.6. Sample summary and diagnostics
+```{r IQ_output1, echo = FALSE, size = "footnotesize"}
+print(samples, probs = c(0.025, 0.5, 0.975),
+      digits_summary = 2)
+```
+
+## IQ.7. Density visualization
+```{r IQ_output2, echo = FALSE, cache = TRUE}
+stan_dens(samples)
+```
+
+# Case Study II: Hierachical signal detection theory (SDT) from @Lee2013
+
+## SDT.1 Research question and data from @Lee2013
+
+Subjects are presented with stimuli that are either signal or noise and asked to make a decision whether the trial features signal or noise. The results of the experiment for the $i^{the}$ subject can be tabulated in a simple $2 \times 2$ table:
+
+| |Signal|Noise|
+|---|---|---|
+|Yes response| Hit | False alarm|
+|No response| Miss | Correct rejection|
+
+## SDT.2. Key quantities and modeling assumptions
+\includegraphics[width=0.8\paperwidth, keepaspectratio]{hierarchical_signal_detection_curves.jpg}
+
+## SDT.3 Research question and data 
+
+There are two groups an _induction_ group and an _deduction_ group, each with 40 subjects presented with 8 trials (4 signal and 4 noise trials). Here are data for the first 6 subjects in the induction group.
+
+```{r SDT_data}
+source("~/OneDrive - University of Nevada, Reno/Research/RStan/example-models/Bayesian_Cognitive_Modeling/CaseStudies/SignalDetection/heit_rotello.RData") #loads the data
+names(std_i) <- c("hits", "false alarms", "misses", "correct rejections")
+knitr::kable(head(std_i))
+```
+
+## SDT.4 Graphical model (now things get interesting).
+
+\begin{columns}
+\begin{column}{0.5\textwidth}  
+    \begin{center}
+    \includegraphics[width=\columnwidth, keepaspectratio]{hierarchical_signal_detection_graphical_model.jpg}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+	$\mu_{d},\mu_{c} \sim Normal(0,1000)$
+	$\lambda_{d},\lambda_{c} \sim Gamma(.001, .001)$
+	$d_{i} \sim Normal(\mu_{d},\lambda_{d})$
+	$c_{i} \sim Normal(\mu_{c},\lambda_{c})$
+	$\theta^{h}_{i} \leftarrow \Phi(\frac{1}{2}d_{i}-c_{i})$
+	$\theta^{f}_{i} \leftarrow \Phi(-\frac{1}{2}d_{i}-c_{i})$
+	$h_{i} \sim Binomial(\theta^{h}_{i}, s)$
+	$f_{i} \sim Binomial(\theta^{f}_{i}, n)$
+\end{column}
+\end{columns}
+
+
+## SDT.5 R code for Stan model I
+
+```{r SDT_stan_model, echo = TRUE, size = "footnotesize"}
+model <- "
+// Hierarchical Signal Detection Theory
+data { 
+  int<lower=1> k;
+  int<lower=0> h[k];
+  int<lower=0> f[k];
+  int<lower=0> s;
+  int<lower=0> n;
+}
+parameters {
+  vector[k] d;
+  vector[k] c;
+  real muc;
+  real mud;
+  real<lower=0> lambdac;
+  real<lower=0> lambdad;
+} 
+"
+```
+
+## SDT.6 R code for Stan model II
+
+```{r SDT_stan_model2, echo = TRUE, size = "footnotesize"}
+model <- paste0(model,"
+transformed parameters {
+  real<lower=0,upper=1> thetah[k];
+  real<lower=0,upper=1> thetaf[k];
+  real<lower=0> sigmac;
+  real<lower=0> sigmad;
+  
+  sigmac = inv_sqrt(lambdac);
+  sigmad = inv_sqrt(lambdad);
+  
+  // Reparameterization Using Equal-Variance Gaussian SDT
+  for(i in 1:k) {
+    thetah[i] = Phi(d[i] / 2 - c[i]);
+    thetaf[i] = Phi(-d[i] / 2 - c[i]);
+  }
+}
+")
+```
+
+## SDT.7 R code for Stan model III
+
+```{r SDT_stan_model3, echo = TRUE, size = "footnotesize"}
+model <- paste0(model,"
+model {
+  // Priors 
+  muc ~ normal(0, inv_sqrt(.001));
+  mud ~ normal(0, inv_sqrt(.001));
+  lambdac ~ gamma(.001, .001);
+  lambdad ~ gamma(.001, .001);
+  
+  // Discriminability and Bias
+  c ~ normal(muc, sigmac);
+  d ~ normal(mud, sigmad);
+  // Observed counts
+  h ~ binomial(s, thetah);
+  f ~ binomial(n, thetaf);
+}")
+```
+
+```{r SDT_presample, echo = FALSE, cache = T}
+niter   <- 10000
+nburnin <- 1000
+```
+
+```{r SDT_sampling, echo = FALSE, cache = T, results = "hide"}
+
+for (dataset in 1:2) {  #analyze both conditions
+
+  if (dataset == 1)
+    data <- std_i # the induction data
+  if (dataset == 2)
+    data <- std_d # the deduction data
+  
+  h <- data[, 1]
+  f <- data[, 2]
+  MI <- data[, 3]
+  CR <- data[, 4]
+  s <- h + MI
+  n <- f + CR
+  s <- s[1]; n <- n[1] #Each subject gets same number of signal and noise trials 
+  k <- nrow(data) 
+
+  data <- list(h=h, f=f, s=s, n=n, k=k) # To be passed on to Stan
+
+  myinits <- list(
+    list(d=rep(0, k), c=rep(0, k), mud=0, muc=0, lambdad=1, lambdac=1)) 
+
+  # Parameters to be monitored
+  parameters <- c("mud", "muc", "sigmad", "sigmac")
+  
+  if (dataset == 1) {
+    # The following command calls Stan with specific options.
+    # For a detailed description type "?rstan".
+    isamples <- stan(model_code=model,   
+                     data=data, 
+                     init=myinits,  # If not specified, gives random inits
+                     pars=parameters,
+                     iter=niter, 
+                     chains=1, 
+                     thin=1,
+                     warmup=nburnin,  # Stands for burn-in; Default = iter/2
+                     # seed=123  # Setting seed; Default is random seed
+    )
+  }
+  if (dataset == 2) {
+    # The following command calls Stan with specific options.
+    # For a detailed description type "?rstan".
+    dsamples <- stan(fit=isamples,   
+                     data=data, 
+                     init=myinits,  # If not specified, gives random inits
+                     pars=parameters,
+                     iter=niter, 
+                     chains=1, 
+                     thin=1,
+                     warmup=nburnin,  # Stands for burn-in; Default = iter/2
+                     # seed=123  # Setting seed; Default is random seed
+    )
+  }
+}
+# Now the values for the monitored parameters are in the "isamples" and 
+# "dsamples "objects, ready for inspection.
+
+```
+
+## SDT.8 Induction group sampler summary
+```{r SDT_output1, echo = FALSE, cache = TRUE, size="footnotesize"}
+keepi <- 1000
+keep <- sample(niter, keepi)
+
+imud <- extract(isamples)$mud
+imuc <- extract(isamples)$muc
+d.imuc <- density(imuc)
+
+dmud <- extract(dsamples)$mud
+dmuc <- extract(dsamples)$muc
+d.dmuc <- density(dmuc)
+print(isamples, probs = c(0.025, 0.5, 0.975),
+      digits_summary = 2)
+
+```
+
+## SDT.9 Deduction group sampler summary
+```{r SDT_output2, echo = FALSE, size = "footnotesize"}
+print(dsamples, probs = c(0.025, 0.5, 0.975),
+      digits_summary = 2)
+```
+
+## SDT.10 Joint posterior over $\mu_{d}$ and $\mu_{c}$ for the induction group (dark) deduction group (light) conditions.
+```{r SDT_output3, echo = FALSE}
+#####Figure 11.5 & 11.6
+
+layout(matrix(c(1,2,3,0),2,2,byrow=T), width=c(2/3, 1/3), heights=c(2/3,1/3))
+#layout.show()
+
+par(mar=c(2,2,1,0))
+plot(imud[keep],imuc[keep], xlab="", ylab="", axes=F,xlim=c(-1,6), ylim=c(-3,3))
+points(dmud[keep],dmuc[keep], col="grey")
+box(lty=1)
+
+par(mar=c(2,1,1,4))
+plot(d.imuc$y, d.imuc$x, xlim=rev(c(0,2.5)),type='l', axes=F, xlab="", ylab="",
+     ylim=c(-3,3))
+lines(d.dmuc$y, d.dmuc$x, col="grey")
+axis(4)
+mtext(expression(paste(mu, "c")), side=4,line=2.3, cex=1.3)
+box(lty=1)
+
+par(mar=c(6,2,0,0))
+plot(density(imud),zero.line=F ,main="", ylab="", xlab="", cex.lab=1.3, axes=F,
+     xlim=c(-1,6),ylim=c(0,1))
+lines(density(dmud), col="grey")
+axis(1, at=c(-1, 0, 1, 2, 3, 4, 5, 6))
+mtext(expression(paste(mu, "d")), side=1.2,line=2, cex=1.3)
+box(lty=1)
+
+```
+
+# Case Study III: Psychophysical functions (PPF) from @Lee2013
+
+## PPF.1 Research question and data from @Lee2013
+
+We are now trying to infer how external physical stimuli cause internal pyschological sensations. The experimental setup is two stimuli are repeatedly presented to a subject - a _standard_ stimulus (baseline) and a _test_ stimulus. In these data, 8 subjects each completed 3 blocks of 80 trials of pairs of two sounds ("beeps"). The standard beep was 300 ms and test beep was **variable**. 
+
+## PPF.2 The psychophysical function and key quantities of interest  @Lee2013
+
+\includegraphics[width=0.8\paperwidth, keepaspectratio]{psychophysical_curve.jpg}
+
+```{r psych_data}
+
+x <- as.matrix(read.table("data_x.txt", sep="\t"))
+x[is.na(x)] = -99  # transforming because Stan won't accept NAs 
+
+n <- as.matrix(read.table("data_n.txt", sep="\t"))
+n[is.na(n)] = -99  # transforming because Stan won't accept NAs 
+
+r <- as.matrix(read.table("data_r.txt", sep="\t"))
+r[is.na(r)] = -99  # transforming because Stan won't accept NAs 
+
+rprop <- as.matrix(read.table("data_rprop.txt", sep="\t"))
+
+xmean <- c(318.888, 311.0417, 284.4444, 301.5909, 
+           296.2000, 305.7692, 294.6429, 280.3571)
+nstim <- c(27, 24, 27, 22, 25, 26, 28, 28)
+nsubjs <- 8
+
+```
+
+## PPF.3 Graphical model
+
+\begin{columns}
+\begin{column}{0.5\textwidth}  
+    \begin{center}
+    \includegraphics[width=0.8\columnwidth, keepaspectratio]{psychophysical_graphical_model.jpg}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+	$r_{ij} \sim Binomial(\theta_{ij}, n_{ij})$ 
+	$logit(\theta_{ij}) \leftarrow \alpha_{i} + \beta_{i}(x_{ij} - \bar{x_{i}})$
+	$\alpha_{i} \sim Normal(\mu_{\alpha}, \sigma_{\alpha})$
+	$\beta_{i} \sim Normal(\mu_{\beta}, \sigma_{\beta})$
+	$\mu_{\alpha} \sim Normal(0,1000)$
+	$\mu_{\beta} \sim Normal(0,1000)$
+	$\sigma_{\alpha} \sim Uniform(0,1000)$
+	$\sigma_{\beta} \sim Uniform(0,1000)$
+\end{column}
+\end{columns}
+
+```{r psych_stan_model, echo = FALSE}
+model <- "
+// Logistic Psychophysical Function
+data { 
+  int nsubjs;
+  int nstim[nsubjs];
+  int n[nsubjs,28];
+  int r[nsubjs,28];
+  int x[nsubjs,28];
+  vector[nsubjs] xmean; 
+}
+parameters {
+  real mua;
+  real mub;
+  real<lower=0,upper=1000> sigmaa;
+  real<lower=0,upper=1000> sigmab;
+  vector[nsubjs] alpha;
+  vector[nsubjs] beta;
+} 
+model {
+  // Priors
+  mua ~ normal(0, inv_sqrt(.001));
+  mub ~ normal(0, inv_sqrt(.001));
+  
+  alpha ~ normal(mua, sigmaa);
+  beta ~ normal(mub, sigmab);
+  
+  for (i in 1:nsubjs) {
+    for (j in 1:nstim[i]) {   
+      real theta; 
+      theta <- inv_logit(alpha[i] + beta[i] * (x[i,j] - xmean[i]));
+      r[i,j] ~ binomial(n[i,j], theta);
+    }
+  }
+}"
+```
+
+```{r psych_presample, echo = FALSE, cache = T, results = "hide", warning=F, message=F}
+data <- list(x=x, xmean=xmean, n=n, r=r, nsubjs=nsubjs, nstim=nstim) 
+
+myinits <- list( 
+  list(alpha=rep(0, nsubjs), beta=rep(0, nsubjs), 
+       mua=0, mub=0, sigmaa=1, sigmab=1),
+  list(alpha=rep(0, nsubjs), beta=rep(0, nsubjs), 
+       mua=0, mub=0, sigmaa=1, sigmab=1))
+
+parameters <- c("alpha", "beta")  # Parameters to be monitored
+
+```
+
+```{r psych_sampling, echo = FALSE, cache = T, results = "hide"}
+samples <- stan(model_code=model,
+                data=data, 
+                init=myinits,
+                pars=parameters,
+                iter=3000, 
+                chains=2, 
+                thin=1,
+                # warmup = 100,  # Stands for burn-in; Default = iter/2
+                # seed = 123  # Setting seed; Default is random seed
+)
+# Now the values for the monitored parameters are in the "samples" object, 
+# ready for inspection.
+
+```
+
+```{r psych_sampler, echo = FALSE, cache = T, results = "hide", warning=F, message=F}
+x[x == -99] = NA
+n[n == -99] = NA
+r[r == -99] = NA
+
+# Extracting the parameters
+alpha      = extract(samples)$alpha
+beta      = extract(samples)$beta
+alphaMAP  = c(rep(0,nsubjs))
+betaMAP  = c(rep(0,nsubjs))
+alpha_sel = matrix(NA,20,8) 
+beta_sel = matrix(NA,20,8) 
+for (i in 1:nsubjs)
+{
+  alphaMAP[i]   <- density(alpha[,i])$x[which(density(alpha[,i])$y ==
+                                              max(density(alpha[,i])$y))]
+  betaMAP[i]    <- density(beta[,i])$x[which(density(beta[,i])$y ==
+                                             max(density(beta[,i])$y))]
+  alpha_sel[,i] <- sample(alpha[,i],20)
+  beta_sel[,i]  <- sample(beta[,i],20)
+}
+
+# only the MAP estimate; use this to plot psychometric functions
+F1 <- function(X,s) 
+{
+  exp(alphaMAP[s] + betaMAP[s]*(X - xmean[s]))/
+  (1+exp(alphaMAP[s] + betaMAP[s]*(X - xmean[s])))
+}
+
+F1inv <- function(Y,s)
+{
+  (log(-Y/(Y-1))-alphaMAP[s])/betaMAP[s]
+}
+
+# function for all the posterior alpha/beta values; use this to calculate JND 
+# posterior
+F2 <- function(X,s) 
+{
+  exp(alpha[,s] + beta[,s]*(X - xmean[s]))/
+  (1+exp(alpha[,s] + beta[,s]*(X - xmean[s])))
+}
+F2inv <- function(Y,s)
+{
+  (log(-Y/(Y-1))-alpha[,s])/beta[,s]
+}
+
+# function for 20 grabbed posterior alpha/beta values; use this to plot 
+# overlapping sigmoids to visualize variance
+F3 <- function(X,s,g) 
+{
+  exp(alpha_sel[g,s] + beta_sel[g,s]*(X - xmean[s]))/
+  (1+exp(alpha_sel[g,s] + beta_sel[g,s]*(X - xmean[s])))
+}
+JND    <- F2inv(0.84,c(1:nsubjs))-F2inv(0.5,c(1:nsubjs))
+JNDmap <- F1inv(0.84,c(1:nsubjs))-F1inv(0.5,c(1:nsubjs))
+                                       
+PSE    <- F2inv(0.5,c(1:nsubjs))+xmean
+PSEmap <- F1inv(0.5,c(1:nsubjs))+xmean
+
+print(samples, probs = c(0.025, 0.5, 0.975),
+      digits_summary = 2)
+```
+
+## PPF.5 Subject-specific psychophysical function estimators
+
+```{r psych_output2, echo = FALSE}
+
+## dev.new(width=10,height=5)
+layout(matrix(1:nsubjs,2,4,byrow=T))
+par(mar=c(1,2,2,0),oma=c(5,5,1,1))
+for (i in 1:nsubjs)
+{
+  scale <- seq(x[i,1],x[i,nstim[i]], by=.1)
+  plot(x[i,],rprop[i,],main=paste("Subject",as.character(i)),xlab="",ylab="",
+       pch=15,col="dark grey",ylim=c(0,1),yaxt="n",xaxt="n")
+  lines(scale,F1(scale,i),type="l")
+  segments(x0=x[i,1],x1=PSEmap[i]+JNDmap[i],y0=0.84,lty=2)
+  segments(x0=x[i,1],x1=PSEmap[i],y0=0.5,lty=2)
+  segments(y0=0,y1=0.84,x0=PSEmap[i]+JNDmap[i],lty=2)
+  segments(y0=0,y1=0.5,x0=PSEmap[i],lty=2)
+  if (i==1 | i==5) 
+  {
+    axis(2,las=1,yaxp=c(0,1,2))
+    axis(2,at=0.84,las=1)
+  }
+  if (i>4) axis(1)
+}
+mtext("Proportion 'Long' Response",side=2,line=2,outer=T,cex=1.4)
+mtext("Test Interval (ms)",side=1,outer=T,line=3,cex=1.4)
+```
+
+## PPF.6 Subject-specific psychophysical function estimators with uncertainty
+
+```{r psych_output3, echo = FALSE}
+
+layout(matrix(1:nsubjs,2,4,byrow=T))
+par(mar=c(1,2,2,0),oma=c(5,5,1,1))
+for (i in 1:nsubjs)
+	{
+	scale <- seq(x[i,1],x[i,nstim[i]], by=.1)
+	plot(x[i,],rprop[i,],main=paste("Subject",as.character(i)),xlab="",ylab="",pch=15,col="dark grey",ylim=c(0,1),yaxt="n",xaxt="n")
+	for (g in 1:20)
+	  {
+	  lines(scale,F3(scale,i,g),type="l",col="light grey")
+	  }
+	lines(scale,F1(scale,i),type="l")
+	if (i==1 | i==5) {
+		axis(2,las=1,yaxp=c(0,1,2))
+		#axis(2,at=0.84,las=1)
+		}
+	if (i>4) axis(1)
+	}
+	mtext("Proportion 'Long' Response",side=2,line=2,outer=T,cex=1.4)
+	mtext("Test Interval (ms)",side=1,outer=T,line=3,cex=1.4)
+
+```
+
+## PPF.7 Model extension to contamination
+
+
+\includegraphics[width=0.7\paperwidth, keepaspectratio]{psychophysical_containment_graphical_model.jpg}
+
+# Take-home message and references
+
+## Take home points: A world beyond $p < 0.05$.
+- Bayesian modeling is natural and flexible
+- Tools exist to compute complex models efficiently
+- Interdisciplinary teams for better science (find your statistician-friends across campus)
+- I'm teaching a new course this Spring: Introduction to Bayesian Statistics (currently listed as MATH 429/629). Grad students will do a project based on your research interests.
+
+## References {.allowframebreaks}

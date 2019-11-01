@@ -1,0 +1,8 @@
+On Simulating Ultra High-Dimensional Multivariate Data
+
+In this era of Big Data, it is critical to realistically simulate data to conduct informative Monte Carlo studies. This is often problematic when data are inherently multivariate while at the same time are (ultra-) high dimensional. This situation appears frequently in observational data found on online and in high-throughput biomedical experiments (e.g., RNA-sequencing). Due to the difficulty in simulating realistic correlated data points, researchers often resort to simulation designs that posit independence --- greatly diminishing the insight into the empirical operating characteristics of any proposed methodology. A major challenge lies in the computational complexity involved in simulating these massive multivariate constructions. In this paper, we first review high-dimensional multivariate approaches and discuss relative merits of the approaches. Then we propose a fairly general procedure to simulate high-dimensional multivariate distributions with pre-specified marginal characteristics and a covariance matrix. Finally, we apply our method to simulate RNA-sequencing data sets (dimension > 20,000) with heterogeneous negative binomial marginals.
+
+keywords: multivariate, simulation, Monte Carlo, RNA-sequencing, negative binomial, covariance
+
+307327
+u8&6Z@

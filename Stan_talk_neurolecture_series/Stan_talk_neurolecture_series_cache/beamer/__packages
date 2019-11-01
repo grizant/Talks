@@ -1,0 +1,15 @@
+base
+ggplot2
+xtable
+MASS
+plyr
+dplyr
+broom
+tidyr
+devtools
+roxygen2
+testthat
+knitr
+rmarkdown
+StanHeaders
+rstan
