@@ -1,5 +1,6 @@
 ---
-title: "Bespoke bioinformatic modeling"
+title: "Bespoke computational oncology"
+subtitle: "How to conduct statistical inference when conventional methods fail"
 author: "A. Grant Schissler"
 institute: "Department of Mathematics and Statistics University of Nevada, Reno"
 bibliography: /Users/alfred/Dropbox/bib/library.bib
@@ -17,32 +18,13 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 })
 ```
 
-# Science through interdisciplinary efforts
-
-- Progress in many fields of scientific inquiry require experts from various fields: biology, chemistry, computer science, genetics, medicine, mathematics/statistics, etc. 
-- Bioinformatics is a prime example of such a field, with interest and expertise across domains .
-- When I was invited to speak here, Dr. Wallace said that many of you all are dealing with 'omics data and was curious what bioinformatic expertise is available on campus.
-- So I'll share my thoughts on this and discuss 2 relevant biomedical gene expression projects I led.
-
-# Special considerations for bioinformatics 
-
-- There are many standard tools and pipelines to measure high-throughput 'omics data (such as RNA-sequencing, mass spectrometry, microarray, etc).
-- There are also many choices available for the downstream analysis --- differentially expressed genes DEGs, pathway enrichment, etc.
-- Keeping up with the advanced tools is a job in itself. We at UNR are lucky to have a bioinformatics core to run experiments, quantify (measure), process (noise correction, etc), and perform advanced (but boilerplate) statistical analyses.
-- If you have standard research question and experimental design, it is best to talk to them early and work together through the process. And enjoy the high quality data!
-
-# What to do when conventional methods fail?
-
-- But sometimes you'd like to understand data from nonstandard setups.
-- For example, are your sample sizes inherently limited? Such as rare diseases / species.
-- And sometimes you aren't sure how to conduct statistical inferences...
-
-# So you result to looking at charts like this
+# Classical statistics for many researchers looks like
 
 \begin{columns}
 \begin{column}{0.5\textwidth}  
     \begin{center}
 	\begin{itemize}
+	    \setlength\itemsep{1em}
 		\item Most developed in early 20th century, fragile, eclipsed by more recent tools
 		\item Often users don’t know they are using models
 		\item Symptom of naive adherence to science through falsification
@@ -54,29 +36,62 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 \end{column}
 \end{columns}
 
-# Now is a good time to talk to an applied statistician
+# Science through interdisciplinary efforts
+
+- Progress in cancer medicine require experts from various fields: biology, chemistry, computer science, genetics, oncology, mathematics/statistics, etc. 
+
+- Computational Oncology is a prime example of such an interdisciplinary field.
+
+- Today I'll share my thoughts on how to conduct statistical inference in nonstandard problems that demand trans-disciplinary knowledge/skills.
+
+- To do so, I'll discuss 2 of our cancer gene expression projects and an introduce a current project.
+
+# Standard bioinformatic analyses for computational oncology
+
+- There are **many** tools and pipelines to measure high-throughput 'omics data (such as RNA-sequencing, mass spectrometry, microarray, etc).
+
+- There are also many choices available for the downstream analysis --- differentially expressed genes DEGs, pathway enrichment, etc. 
+
+- Keeping up with the advanced tools is a job in itself. 
+
+- If you have standard research question and experimental design, it is to best to collaborate with bioinformatics core  (talk to them early and work together through the process).
+
+- They can run experiments, quantify (measure), process (noise correction, etc), and perform advanced (but boilerplate) statistical analyses.
+
+# What to do when conventional methods fail?
+
+- But sometimes you'd like to understand data from nonstandard setups.
+
+- For example, are your sample sizes inherently limited? Such as rare diseases / species.
+
+- And sometimes you aren't sure how to conduct statistical inferences...
+
+# Now is a good time to talk to an applied (bio)statistician
 
 - When you are in this situation someone like me is a good collaborator.
+
 - Discussions should begin early, not after getting the data and trying to recover.
+
 - But most statisticians can't resist seeing data at any point, so it is worth a shot.
+
 - Now I'll discuss 2 bioinformatic projects that resulting produced novel methods in challenging/nonstandard settings.
-
-# What are your needs for bioinformatic analysis
-
-- Before we progress to sharing a few projects, I'd like to know briefly what types of bioinformatic/statistical issues & challenges you are facing.
-- E.g., p-values not getting the job done? No model seems to fit? Data cumbersome?
 
 # Project 1 N1PAS
 
 - Do alternatively spliced genes in tumor aggregate into biological pathways?
+
 - Does this signal inform on cancer survival?
+
 - Can this be discovered in a single-subject experimental design (nof1)?
+
 - You need a tailored (bespoke) method to handle this question.
+
 - This lead to the development of N-of-1-*pathways* Alternatively Spliced (N1PAS) [@Schissler2019].
 
 # N1PAS The general idea
 
 \begin{itemize}
+	    \setlength\itemsep{1em}
 \item We'd like a methodology to estimate complex biological dysregulation using paired samples from cancer patients.
 \item This dysregulation relates to coordinated differential protein isoform usage within biological pathways.
 \item But we seek a single-subject framework for precision medicine.
@@ -179,6 +194,7 @@ H_{g}(p_{gA}, p_{gB}) = 1 / \sqrt{2} \sum_{k=1}^{K_{g}} \left( \sqrt{ \frac{x_{g
 # Monte Carlo evaluation
 
   \begin{itemize}
+  	    \setlength\itemsep{1em}
   \item Trying the simulate parameterically is challenging as the isoform counts are ultra high-dimensional, multivariate, and discrete
   \item Instead we chose to permute in a subject-specific way: find the distribution of Hellinger distances for the 4133 genes annotated to KEGG pathways. Then permute gene labels to create null distribution of pathway odds ratios.
     \item The effect size corresponds to the proportion of ASGs within a pathway $\pi$, relative to the subject-specific background level of ASGs ($\pi_{all}$).
@@ -186,8 +202,8 @@ H_{g}(p_{gA}, p_{gB}) = 1 / \sqrt{2} \sum_{k=1}^{K_{g}} \left( \sqrt{ \frac{x_{g
 
 # Simulation settings and procedure
   \begin{itemize}
+  	    \setlength\itemsep{0.5em}
   \item 6 TCGA data sets explored, for a total of 246 patients.
-    \item For each patient, compute Hellinger distances for each gene and use 2-means to cluster into ASG or not classes.
     \item Let $G=\{15, 30, 50, 100\}$ be the number of expressed genes in the specified pathway. Select at random a KEGG pathway with this number of genes.
     \item Let the effect size $\pi=\{0, 0.05, 0.10, 0.15, 0.20\}$.
     \item Select $G \times (\pi + \pi_{all})$ genes within the specified pathway at random to be from the ASG class and the remaining pathway genes from the non-ASG class.
@@ -233,6 +249,7 @@ H_{g}(p_{gA}, p_{gB}) = 1 / \sqrt{2} \sum_{k=1}^{K_{g}} \left( \sqrt{ \frac{x_{g
 
 # Summary
   \begin{enumerate}
+  	    \setlength\itemsep{1em}
   \item We developed the N-of-1-pathways Alternatively Spliced (N1PAS) framework.
     \item This will provide a single-subject method to detect alternatively spliced genetic pathways to enable precision medicine.
     \item We conducted Monte Carlo evaluations and find adequate false discovery rate control and impressive power to detect enriched pathways.
@@ -244,9 +261,13 @@ H_{g}(p_{gA}, p_{gB}) = 1 / \sqrt{2} \sum_{k=1}^{K_{g}} \left( \sqrt{ \frac{x_{g
 # Project 2 Learning therapeutic resistance from circulating tumor cells
 
 - Can prostate cancer therapy resistance be detected from single cell RNA-sequencing (scRNA-seq) of circulating tumor cells (CTCs)?
+
 - But it is experimentally and computational challenging to sequence CTCs.
+
 - This results in only a few CTCs sequenced per patient.
+
 - You need a tailored (bespoke) method to handle this question.
+
 - This lead to the development of an *Analysis of aggregated cell-cell statistical distances within pathways unveils therapeutic-resistance mechanisms in circulating tumor cells* [@Schissler2016a].
 
 # CTCs Methods paired pathway level cell-cell comparisons
@@ -269,16 +290,45 @@ H_{g}(p_{gA}, p_{gB}) = 1 / \sqrt{2} \sum_{k=1}^{K_{g}} \left( \sqrt{ \frac{x_{g
   \centering \includegraphics[keepaspectratio,width=\textwidth,height=0.8\textheight]{../CTCs/figures/fig5.pdf}
 \end{figure}
 
-# Conclusions / Future Work / Learn more
+# Current work: Precision medicine via N-of-1 genomics and demographics
 
-* Bioinformatics and many fields rely on many professionals to get the work done.
+- Goal of our project (NIH 1U54GM104944) is to integrate of single-subject gene expression studies and demographic/social/clinical data to predict cancer survival.
+
+- We model cancer survival times as a function of differentially expressed pathways (DEPs) and demographic data. I proposed a Bayesian multi-level accelerated failure time model.
+
+- But again there's high dimenisonality and small sample size. So we have a high probability of new methodology needed.
+
+- Are there gene x environmental biomechiams that explain why African American women suffering from breast cancer often present with more aggressive tumors and have worse survival times compared to Caucasian women?
+
+# Current work: Precision medicine via N-of-1 genomics and demographics
+\centering
+ \includegraphics[keepaspectratio,width=\textwidth,height=0.75\textheight]{./figures/four_survival.pdf}
+
+# Current work: Precision medicine via N-of-1 genomics and demographics
+
+- Opportunities for collaboration, especially those interested in reducing **health disparities** in cancer: 
+
+	1) Design model inputs (variables to include, prior knowledge).  
+	
+	2) Help refine models.  
+	
+	3) Generate and discuss results.
+	
+	4) Validate results in patient-derived samples, cells, etc.  
+	
+	5) Translate the results. I.e., develop therapies/drugs to target novel dysregulated biomechanisms.  
+
+# Conclusions / Future Work
+
+* Computational Oncology and many fields rely on many professionals to get the work done.
 
 * Applied statisticians can help with experimental design, modeling, interpretation, inference.
 
-* Something that I'm now interesting is in the use of Bayesian modeling to enhance interdisciplinary collaboration:
+* I plan to develop Bayesian models to enhance interdisciplinary collaboration:
+
 	- Developing, fitting, implementing, interpreting, custom probability models with hand-picked targets of learning (parameters) with expert guidance.
+	
 	- Explore the role of subjective (informative) prior distribution elicitation in Bayesian bioinformatic modeling.
-	- Students consider taking the new **STAT 646 Introduction to Bayesian Statistics** offered every Spring. I'll do a project with you and I encourage you to bring your thesis research. Faculty are also welcome if there is room
 
 # Acknowledgements
 
@@ -304,13 +354,14 @@ H_{g}(p_{gA}, p_{gB}) = 1 / \sqrt{2} \sum_{k=1}^{K_{g}} \left( \sqrt{ \frac{x_{g
     \begin{block}{Medical doctors}
       Yves A. Lussier, MD
     \end{block}
-    %\begin{block}{Grants/travel awards}
-    %  Research \& Innovation, UNR
-    % \end{block}
-    \begin{block}{Biochemistry, UNR}
-      Thanks Dr. Ian Wallace for the invitation\\
-	  Colin Fox, PhD candidate\\
-	  All others involved
+    \begin{block}{Grants/travel awards}
+	  NIH 1U54GM104944 \\
+      Research \& Innovation, UNR
+    \end{block}
+    \begin{block}{City of Hope}
+      Thanks Dr. Russell Rockne for the invitation\\
+	  Angelica Quijada for organizing\\
+	  All others I've interacted with here.
     \end{block}
   \end{column}
 \end{columns}

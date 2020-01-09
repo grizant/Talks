@@ -34,7 +34,7 @@
 }
 \usepackage{hyperref}
 \hypersetup{
-            pdftitle={Bespoke bioinformatic modeling},
+            pdftitle={Bespoke computational oncology},
             pdfauthor={A. Grant Schissler},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -84,7 +84,9 @@
 \makeatother
 
 
-\title{Bespoke bioinformatic modeling}
+\title{Bespoke computational oncology}
+\providecommand{\subtitle}[1]{}
+\subtitle{How to conduct statistical inference when conventional methods fail}
 \author{A. Grant Schissler}
 \providecommand{\institute}[1]{}
 \institute{Department of Mathematics and Statistics University of Nevada, Reno}
@@ -94,81 +96,14 @@
 \frame{\titlepage}
 
 \begin{frame}{%
-\protect\hypertarget{science-through-interdisciplinary-efforts}{%
-Science through interdisciplinary efforts}}
-
-\begin{itemize}
-\tightlist
-\item
-  Progress in many fields of scientific inquiry require experts from
-  various fields: biology, chemistry, computer science, genetics,
-  medicine, mathematics/statistics, etc.
-\item
-  Bioinformatics is a prime example of such a field, with interest and
-  expertise across domains .
-\item
-  When I was invited to speak here, Dr.~Wallace said that many of you
-  all are dealing with ’omics data and was curious what bioinformatic
-  expertise is available on campus.
-\item
-  So I’ll share my thoughts on this and discuss 2 relevant biomedical
-  gene expression projects I led.
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}{%
-\protect\hypertarget{special-considerations-for-bioinformatics}{%
-Special considerations for bioinformatics}}
-
-\begin{itemize}
-\tightlist
-\item
-  There are many standard tools and pipelines to measure high-throughput
-  ’omics data (such as RNA-sequencing, mass spectrometry, microarray,
-  etc).
-\item
-  There are also many choices available for the downstream analysis —
-  differentially expressed genes DEGs, pathway enrichment, etc.
-\item
-  Keeping up with the advanced tools is a job in itself. We at UNR are
-  lucky to have a bioinformatics core to run experiments, quantify
-  (measure), process (noise correction, etc), and perform advanced (but
-  boilerplate) statistical analyses.
-\item
-  If you have standard research question and experimental design, it is
-  best to talk to them early and work together through the process. And
-  enjoy the high quality data!
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}{%
-\protect\hypertarget{what-to-do-when-conventional-methods-fail}{%
-What to do when conventional methods fail?}}
-
-\begin{itemize}
-\tightlist
-\item
-  But sometimes you’d like to understand data from nonstandard setups.
-\item
-  For example, are your sample sizes inherently limited? Such as rare
-  diseases / species.
-\item
-  And sometimes you aren’t sure how to conduct statistical
-  inferences\ldots{}
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}{%
-\protect\hypertarget{so-you-result-to-looking-at-charts-like-this}{%
-So you result to looking at charts like this}}
+\protect\hypertarget{classical-statistics-for-many-researchers-looks-like}{%
+Classical statistics for many researchers looks like}}
 
 \begin{columns}
 \begin{column}{0.5\textwidth}  
     \begin{center}
     \begin{itemize}
+        \setlength\itemsep{1em}
         \item Most developed in early 20th century, fragile, eclipsed by more recent tools
         \item Often users don’t know they are using models
         \item Symptom of naive adherence to science through falsification
@@ -183,11 +118,76 @@ So you result to looking at charts like this}}
 \end{frame}
 
 \begin{frame}{%
-\protect\hypertarget{now-is-a-good-time-to-talk-to-an-applied-statistician}{%
-Now is a good time to talk to an applied statistician}}
+\protect\hypertarget{science-through-interdisciplinary-efforts}{%
+Science through interdisciplinary efforts}}
 
 \begin{itemize}
-\tightlist
+\item
+  Progress in cancer medicine require experts from various fields:
+  biology, chemistry, computer science, genetics, oncology,
+  mathematics/statistics, etc.
+\item
+  Computational Oncology is a prime example of such an interdisciplinary
+  field.
+\item
+  Today I’ll share my thoughts on how to conduct statistical inference
+  in nonstandard problems that demand trans-disciplinary
+  knowledge/skills.
+\item
+  To do so, I’ll discuss 2 of our cancer gene expression projects and an
+  introduce a current project.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{%
+\protect\hypertarget{standard-bioinformatic-analyses-for-computational-oncology}{%
+Standard bioinformatic analyses for computational oncology}}
+
+\begin{itemize}
+\item
+  There are \textbf{many} tools and pipelines to measure high-throughput
+  ’omics data (such as RNA-sequencing, mass spectrometry, microarray,
+  etc).
+\item
+  There are also many choices available for the downstream analysis —
+  differentially expressed genes DEGs, pathway enrichment, etc.
+\item
+  Keeping up with the advanced tools is a job in itself.
+\item
+  If you have standard research question and experimental design, it is
+  to best to collaborate with bioinformatics core (talk to them early
+  and work together through the process).
+\item
+  They can run experiments, quantify (measure), process (noise
+  correction, etc), and perform advanced (but boilerplate) statistical
+  analyses.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{%
+\protect\hypertarget{what-to-do-when-conventional-methods-fail}{%
+What to do when conventional methods fail?}}
+
+\begin{itemize}
+\item
+  But sometimes you’d like to understand data from nonstandard setups.
+\item
+  For example, are your sample sizes inherently limited? Such as rare
+  diseases / species.
+\item
+  And sometimes you aren’t sure how to conduct statistical
+  inferences\ldots{}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{%
+\protect\hypertarget{now-is-a-good-time-to-talk-to-an-applied-biostatistician}{%
+Now is a good time to talk to an applied (bio)statistician}}
+
+\begin{itemize}
 \item
   When you are in this situation someone like me is a good collaborator.
 \item
@@ -204,28 +204,10 @@ Now is a good time to talk to an applied statistician}}
 \end{frame}
 
 \begin{frame}{%
-\protect\hypertarget{what-are-your-needs-for-bioinformatic-analysis}{%
-What are your needs for bioinformatic analysis}}
-
-\begin{itemize}
-\tightlist
-\item
-  Before we progress to sharing a few projects, I’d like to know briefly
-  what types of bioinformatic/statistical issues \& challenges you are
-  facing.
-\item
-  E.g., p-values not getting the job done? No model seems to fit? Data
-  cumbersome?
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}{%
 \protect\hypertarget{project-1-n1pas}{%
 Project 1 N1PAS}}
 
 \begin{itemize}
-\tightlist
 \item
   Do alternatively spliced genes in tumor aggregate into biological
   pathways?
@@ -247,6 +229,7 @@ Project 1 N1PAS}}
 N1PAS The general idea}}
 
 \begin{itemize}
+        \setlength\itemsep{1em}
 \item We'd like a methodology to estimate complex biological dysregulation using paired samples from cancer patients.
 \item This dysregulation relates to coordinated differential protein isoform usage within biological pathways.
 \item But we seek a single-subject framework for precision medicine.
@@ -409,6 +392,7 @@ TCGA data sets to guide development}}
 Monte Carlo evaluation}}
 
 \begin{itemize}
+        \setlength\itemsep{1em}
   \item Trying the simulate parameterically is challenging as the isoform counts are ultra high-dimensional, multivariate, and discrete
   \item Instead we chose to permute in a subject-specific way: find the distribution of Hellinger distances for the 4133 genes annotated to KEGG pathways. Then permute gene labels to create null distribution of pathway odds ratios.
     \item The effect size corresponds to the proportion of ASGs within a pathway $\pi$, relative to the subject-specific background level of ASGs ($\pi_{all}$).
@@ -421,8 +405,8 @@ Monte Carlo evaluation}}
 Simulation settings and procedure}}
 
 \begin{itemize}
+        \setlength\itemsep{0.5em}
   \item 6 TCGA data sets explored, for a total of 246 patients.
-    \item For each patient, compute Hellinger distances for each gene and use 2-means to cluster into ASG or not classes.
     \item Let $G=\{15, 30, 50, 100\}$ be the number of expressed genes in the specified pathway. Select at random a KEGG pathway with this number of genes.
     \item Let the effect size $\pi=\{0, 0.05, 0.10, 0.15, 0.20\}$.
     \item Select $G \times (\pi + \pi_{all})$ genes within the specified pathway at random to be from the ASG class and the remaining pathway genes from the non-ASG class.
@@ -511,6 +495,7 @@ pipeline}}
 Summary}}
 
 \begin{enumerate}
+        \setlength\itemsep{1em}
   \item We developed the N-of-1-pathways Alternatively Spliced (N1PAS) framework.
     \item This will provide a single-subject method to detect alternatively spliced genetic pathways to enable precision medicine.
     \item We conducted Monte Carlo evaluations and find adequate false discovery rate control and impressive power to detect enriched pathways.
@@ -526,7 +511,6 @@ Summary}}
 Project 2 Learning therapeutic resistance from circulating tumor cells}}
 
 \begin{itemize}
-\tightlist
 \item
   Can prostate cancer therapy resistance be detected from single cell
   RNA-sequencing (scRNA-seq) of circulating tumor cells (CTCs)?
@@ -587,22 +571,83 @@ CTCs Novel cell-specific dysregulation patterns/viz}}
 \end{frame}
 
 \begin{frame}{%
-\protect\hypertarget{conclusions-future-work-learn-more}{%
-Conclusions / Future Work / Learn more}}
+\protect\hypertarget{current-work-precision-medicine-via-n-of-1-genomics-and-demographics}{%
+Current work: Precision medicine via N-of-1 genomics and demographics}}
 
 \begin{itemize}
 \item
-  Bioinformatics and many fields rely on many professionals to get the
-  work done.
+  Goal of our project (NIH 1U54GM104944) is to integrate of
+  single-subject gene expression studies and demographic/social/clinical
+  data to predict cancer survival.
+\item
+  We model cancer survival times as a function of differentially
+  expressed pathways (DEPs) and demographic data. I proposed a Bayesian
+  multi-level accelerated failure time model.
+\item
+  But again there’s high dimenisonality and small sample size. So we
+  have a high probability of new methodology needed.
+\item
+  Are there gene x environmental biomechiams that explain why African
+  American women suffering from breast cancer often present with more
+  aggressive tumors and have worse survival times compared to Caucasian
+  women?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{%
+\protect\hypertarget{current-work-precision-medicine-via-n-of-1-genomics-and-demographics-1}{%
+Current work: Precision medicine via N-of-1 genomics and demographics}}
+
+\centering
+
+\includegraphics[keepaspectratio,width=\textwidth,height=0.75\textheight]{./figures/four_survival.pdf}
+
+\end{frame}
+
+\begin{frame}{%
+\protect\hypertarget{current-work-precision-medicine-via-n-of-1-genomics-and-demographics-2}{%
+Current work: Precision medicine via N-of-1 genomics and demographics}}
+
+\begin{itemize}
+\item
+  Opportunities for collaboration, especially those interested in
+  reducing \textbf{health disparities} in cancer:
+
+  \begin{enumerate}
+  [1)]
+  \item
+    Design model inputs (variables to include, prior knowledge).
+  \item
+    Help refine models.
+  \item
+    Generate and discuss results.
+  \item
+    Validate results in patient-derived samples, cells, etc.
+  \item
+    Translate the results. I.e., develop therapies/drugs to target novel
+    dysregulated biomechanisms.
+  \end{enumerate}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{%
+\protect\hypertarget{conclusions-future-work}{%
+Conclusions / Future Work}}
+
+\begin{itemize}
+\item
+  Computational Oncology and many fields rely on many professionals to
+  get the work done.
 \item
   Applied statisticians can help with experimental design, modeling,
   interpretation, inference.
 \item
-  Something that I’m now interesting is in the use of Bayesian modeling
-  to enhance interdisciplinary collaboration:
+  I plan to develop Bayesian models to enhance interdisciplinary
+  collaboration:
 
   \begin{itemize}
-  \tightlist
   \item
     Developing, fitting, implementing, interpreting, custom probability
     models with hand-picked targets of learning (parameters) with expert
@@ -610,11 +655,6 @@ Conclusions / Future Work / Learn more}}
   \item
     Explore the role of subjective (informative) prior distribution
     elicitation in Bayesian bioinformatic modeling.
-  \item
-    Students consider taking the new \textbf{STAT 646 Introduction to
-    Bayesian Statistics} offered every Spring. I’ll do a project with
-    you and I encourage you to bring your thesis research. Faculty are
-    also welcome if there is room
   \end{itemize}
 \end{itemize}
 
@@ -646,13 +686,14 @@ Acknowledgements}}
     \begin{block}{Medical doctors}
       Yves A. Lussier, MD
     \end{block}
-    %\begin{block}{Grants/travel awards}
-    %  Research \& Innovation, UNR
-    % \end{block}
-    \begin{block}{Biochemistry, UNR}
-      Thanks Dr. Ian Wallace for the invitation\\
-      Colin Fox, PhD candidate\\
-      All others involved
+    \begin{block}{Grants/travel awards}
+      NIH 1U54GM104944 \\
+      Research \& Innovation, UNR
+    \end{block}
+    \begin{block}{City of Hope}
+      Thanks Dr. Russell Rockne for the invitation\\
+      Angelica Quijada for organizing\\
+      All others I've interacted with here.
     \end{block}
   \end{column}
 \end{columns}
